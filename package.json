@@ -1,0 +1,35 @@
+{
+  "name": "todo-app",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite-ssg build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix"
+  },
+  "devDependencies": {
+  "@eslint/js": "^9.15.0",
+  "@fontsource-variable/montserrat": "^5.1.0",
+  "@fontsource/ibm-plex-mono": "^5.1.0",
+  "@stylistic/eslint-plugin": "^2.11.0",
+  "@unhead/vue": "^1.11.11",
+  "@vitejs/plugin-vue": "^5.2.0",
+  "eslint": "^9.15.0",
+  "eslint-plugin-vue": "^9.31.0",
+  "globals": "^15.12.0",
+  "lightningcss": "^1.28.2",
+  "normalize.css": "^8.0.1",
+  "prettier": "^3.3.3",
+  "typescript": "^5.7.2",
+  "typescript-eslint": "^8.15.0",
+  "vite": "^5.4.11",
+  "vite-ssg": "^0.24.1",
+  "vue": "^3.5.13",
+  "vue-eslint-parser": "^9.4.3",
+  "vue-tsc": "^2.1.10"
+  }
+}

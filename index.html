@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <style>
+    #app {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 4rem;
+      width: calc(100vw - 8rem);
+      height: calc(100vh - 8rem);
+    }
+
+    section {
+      display: flex;
+      height: 600px;
+      width: 100vw;
+
+      div {
+        display: flex;
+        flex-direction: column;
+
+        &:nth-child(1) {
+          justify-content: center;
+          align-items: center;
+          width: 220px;
+
+          #display {
+            height: 200px;
+            background: url('./techs.png') no-repeat;
+            background-size: 220px 500px;
+            background-position: center -2.5%;
+            transition: background-position 0.2s ease-out;
+          }
+
+          div {
+            height: 600px;
+            background: url('./mac@2x.png') no-repeat center;
+            background-size: 220px auto;
+          }
+        }
+
+        &:nth-child(2) {
+          flex: 1;
+          overflow-x: hidden;
+          overflow-y: scroll;
+          scroll-behavior: smooth;
+          padding: 2rem;
+        }
+      }
+    }
+
+    /* Scrollable content styling */
+    .scrollable-content {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    /* When the content is scrolled into view */
+    .scrollable-content.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+
+  <body>
+    <main id="app"></main>
+
+    <script type="text/x-template" id="app-template">
+      <section>
+        <div>
+          <div id="display" :style="{
+            backgroundPosition: `center ${heightPosition}%`
+          }">
+            <div></div>
+          </div>
+        </div>
+        <div class="scrollable-container" ref="scrollContainer" @scroll="scrollImage">
+          <p 
+            v-for="n in 30" 
+            :key="n"
+            :ref="el => contentRefs[n] = el"
+            :class="['scrollable-content', { visible: isVisible(n) }]">
+            What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+          </p>
+        </div>
+      </section>
+    </script>
+    <script type="module">
+      import 'normalize.css'
+      import '@fontsource/ibm-plex-mono'
+      import '@fontsource-variable/montserrat'
+      import { ViteSSG } from 'vite-ssg/single-page'
+      import { ref } from 'vue'
+
+      const App = {
+        template: '#app-template',
+        setup () {
+          const heightPosition = ref(-2.5)
+          const scrollPosition = ref(0)
+          const contentRefs = ref([]) 
+          const visibleIndices = ref([])
+
+          const isVisible = (index) => visibleIndices.value.includes(index)
+
+          const scrollEffect = () => {
+            visibleIndices.value = []
+            contentRefs.value.forEach((element, index) => {
+              if (element) {
+                const rect = element.getBoundingClientRect()
+                console.log(rect.top)
+                if (rect.top >= 0 && rect.top <= window.innerHeight) {
+                  visibleIndices.value.push(index)
+                }
+              }
+            })
+          }
+
+          const scrollImage = (e) => {
+            const el = e.target
+            const scrollHeight = el.scrollHeight - el.offsetHeight
+            const scrollPercentage = el.scrollTop / scrollHeight
+
+            const minPosition = -2.5
+            const maxPosition = 120
+
+            heightPosition.value = minPosition + (scrollPercentage * (maxPosition - minPosition))
+
+            scrollPosition.value = el.scrollTop
+            scrollEffect()
+          }
+
+          return {
+            contentRefs,
+            heightPosition,
+            isVisible,
+            scrollImage
+          }
+        }
+      }
+      
+      ViteSSG(App)
+    </script>
+  </body>
+</html>
