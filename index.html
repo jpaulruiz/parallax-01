@@ -110,7 +110,6 @@
             contentRefs.value.forEach((element, index) => {
               if (element) {
                 const rect = element.getBoundingClientRect()
-                console.log(rect.top)
                 if (rect.top >= 0 && rect.top <= window.innerHeight) {
                   visibleIndices.value.push(index)
                 }
